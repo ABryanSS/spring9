@@ -1,0 +1,42 @@
+-- Criar a tabela externa infoGenres
+CREATE EXTERNAL TABLE IF NOT EXISTS infoGenres (
+  id_genres INT,
+  name STRING
+)
+LOCATION 's3://theclown/raw/trusted/tmdb/infogenres';
+
+-- Inserir dados na tabela infoGenres
+INSERT INTO infoGenres (id_genres, name)
+SELECT DISTINCT 
+    ROW_NUMBER() OVER () AS id_genres,
+    name
+FROM "2024_02_12";
+
+-- Criar a tabela externa infoDados
+CREATE EXTERNAL TABLE IF NOT EXISTS infoDados (
+  id_genres INT,
+  name STRING,
+  popularity DOUBLE,
+  voteAverage DOUBLE,
+  originalLanguage STRING,
+  overview STRING,
+  firstAirDate STRING,
+  numberOfEpisodes INT
+)
+LOCATION 's3://theclown/raw/trusted/tmdb/infodados';
+
+-- Inserir dados na tabela infoDados
+INSERT INTO infoDados (id_genres, name, popularity, voteAverage, originalLanguage, overview, firstAirDate, numberOfEpisodes)
+SELECT
+  ig.id_genres,
+  id.name,
+  id.popularity,
+  id.vote_average,
+  id.original_language,
+  id.overview,
+  id.first_air_date,
+  id.number_of_episodes
+FROM "2024_02_12" id
+JOIN infoGenres ig ON id.name = ig.name;
+
+

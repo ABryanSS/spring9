@@ -1,0 +1,150 @@
+CREATE VIEW infofilme_view AS
+SELECT
+    id AS id_filme_serie,
+    titulo_principal,
+    titulo_original,
+    ano_lancamento,
+    genero,
+    nota_media,
+    numero_votos,
+    genero_artista,
+    personagem,
+    nome_artista,
+    ano_nascimento,
+    ano_falecimento,
+    profissao,
+    titulos_mais_conhecidos
+FROM
+    movies;
+
+CREATE VIEW infoserie_view AS
+SELECT
+    id AS id_filme_serie,
+    titulo_principal,
+    titulo_original,
+    ano_lancamento,
+    ano_termino,
+    genero,
+    nota_media,
+    numero_votos,
+    genero_artista,
+    personagem,
+    nome_artista,
+    ano_nascimento,
+    ano_falecimento,
+    profissao,
+    titulos_mais_conhecidos
+FROM
+    series;
+
+CREATE VIEW artistafilm_view AS
+SELECT
+    idartista AS id,
+    nomeartista AS nome_artista,
+    profissao,
+    personagem,
+    anonascimento AS ano_nascimento,
+    anofalecimento AS ano_falecimento,
+    titulosmaisconhecidos AS titulos_mais_conhecidos,
+    genero_artista
+FROM
+    artisfilmes;
+
+CREATE VIEW artistaserie_view AS
+SELECT
+    idartista,
+    nomeartista,
+    profissao,
+    personagem,
+    anonascimento,
+    anofalecimento,
+    titulosmaisconhecidos,
+    genero_artista
+FROM
+    artisseries;
+
+CREATE VIEW fatofilm_view AS
+SELECT
+    idfilme AS id_filme_serie,
+    idartista,
+    notamedia,
+    numerovotos,
+    tempominutos
+FROM
+    fatofilmes;
+
+CREATE VIEW fatoserie_view AS
+SELECT
+    idserie AS id_filme_serie,
+    idartista,
+    notamedia,
+    numerovotos,
+    tempominutos
+FROM
+    fatoseries;
+
+CREATE VIEW infodados_view AS
+SELECT
+    id.id_genres,
+    id.name AS nome,
+    id.popularity,
+    id.voteaverage AS vote_average,
+    id.originallanguage AS original_language,
+    id.overview,
+    id.firstairdate AS first_air_date,
+    id.numberofepisodes AS number_of_episodes,
+    ig.name AS genre_name
+FROM
+    infodados id
+JOIN
+    infogenres ig ON id.id_genres = ig.id_genres;
+    
+CREATE VIEW infogenres_view AS
+SELECT
+    id_genres,
+    name
+FROM
+    infogenres;
+
+
+CREATE VIEW caracfilm_view AS
+SELECT
+    'Filme' AS tipo,
+    id.idfilme AS id,
+    id.id AS identificador,
+    id.tituloprincipal AS titulo_principal,
+    id.titulooriginal AS titulo_original,
+    id.anolancamento AS ano_lancamento,
+    id.genero AS genero
+FROM
+    infofilmes id;
+
+CREATE VIEW caracserie_view AS
+SELECT
+    'Série' AS tipo,
+    is.idserie AS id,
+    is.id AS identificador,
+    is.tituloprincipal AS titulo_principal,
+    is.titulooriginal AS titulo_original,
+    is.anolancamento AS ano_lancamento,
+    is.genero AS genero,
+    is.anotermino AS ano_termino
+FROM
+    infoseries is;
+
+CREATE VIEW tmdb AS
+SELECT
+    name,
+    popularity,
+    genres,
+    vote_average,
+    original_language,
+    origin_country,
+    networks,
+    overview,
+    first_air_date,
+    production_companies,
+    episode_run_time,
+    number_of_episodes
+FROM "2024_02_12";
+

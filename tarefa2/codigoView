@@ -1,0 +1,55 @@
+-- View para a dimensão Combustivel
+CREATE VIEW vw_DimCombustivel AS
+SELECT
+    idCombustivel,
+    tipoCombustivel
+FROM Combustivel;
+
+-- View para a dimensão Cliente
+CREATE VIEW vw_DimCliente AS
+SELECT 
+    idCliente,
+    nomeCliente,
+    cidadeCliente,
+    estadoCliente,
+    paisCliente
+FROM Cliente;
+
+-- View para a dimensão Carro
+CREATE VIEW vw_DimCarro AS
+SELECT
+    idCarro,
+    modeloCarro,
+    marcaCarro,
+    kmCarro,
+    anoCarro,
+    classiCarro
+FROM Carro;
+
+-- View para a dimensão Vendedor
+CREATE VIEW vw_DimVendedor AS
+SELECT
+    idVendedor,
+    nomeVendedor,
+    sexoVendedor,
+    estadoVendedor
+FROM Vendedor;
+
+-- View para o fato Locacao
+CREATE VIEW vw_FatoLocacao AS
+SELECT
+    L.idLocacao,
+    C.idCliente,
+    V.idVendedor,
+    Ca.idCarro,
+    L.qtdDiaria,
+    L.vlrDiaria,
+    L.dataLocacao,
+    L.horaLocacao,
+    L.dataEntrega,
+    L.horaEntrega
+FROM Locacao L
+INNER JOIN Cliente C ON L.idCliente = C.idCliente
+INNER JOIN Vendedor V ON L.idVendedor = V.idVendedor
+INNER JOIN Carro Ca ON L.idCarro = Ca.idCarro;
+

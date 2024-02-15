@@ -1,0 +1,29 @@
+Table FatoSeries {
+  idSerie int [ref: > DimSerie.idSerie]
+  idArtista int [ref: > DimArtista.idArtista]
+  notaMedia float
+  numeroVotos int
+  tempoMinutos int
+}
+
+Table DimSerie {
+  idSerie int [primary key]
+  id varchar(255)
+  tituloPrincipal varchar(255)
+  tituloOriginal varchar(255)
+  anoLancamento int
+  anoTermino int
+  genero varchar(255)
+}
+
+Table DimArtista {
+  idArtista int [primary key]
+  nomeArtista varchar(255)
+  personagem varchar(255)
+  anoNascimento int
+  anoFalecimento int
+  profissao varchar(255)
+  titulosMaisConhecidos varchar(255)
+  genero_artista varchar(255)
+}
+

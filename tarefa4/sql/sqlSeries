@@ -1,0 +1,70 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS infoSeries (
+  idSerie INT,
+  id string,
+  tituloPrincipal VARCHAR(255),
+  tituloOriginal VARCHAR(255),
+  anoLancamento INT,
+  anoTermino INT,
+  genero VARCHAR(255)
+)
+LOCATION 's3://theclown/raw/trusted/movies_series/series/infoSeries';
+
+INSERT INTO infoSeries (idSerie, id, tituloPrincipal, tituloOriginal, anoLancamento, anoTermino, genero)
+SELECT
+    ROW_NUMBER() OVER () AS idSerie,
+    id,
+    titulo_principal,
+    titulo_original,
+    ano_lancamento,
+    ano_termino,
+    genero
+FROM
+    series;
+    
+CREATE EXTERNAL TABLE IF NOT EXISTS artisSeries (
+  idArtista INT,
+  nomeArtista STRING,
+  personagem STRING,
+  anoNascimento INT,
+  anoFalecimento INT,
+  profissao STRING,
+  titulosMaisConhecidos STRING,
+  genero_artista STRING
+)
+LOCATION 's3://theclown/raw/trusted/movies_series/series/artisSeries';
+
+INSERT INTO artisSeries (idArtista, nomeArtista, personagem, anoNascimento, anoFalecimento, profissao, titulosMaisConhecidos, genero_artista)
+SELECT
+    ROW_NUMBER() OVER () AS idArtista,
+    nome_artista,
+    personagem,
+    ano_nascimento,
+    ano_falecimento,
+    profissao,
+    titulos_mais_conhecidos,
+    genero_artista
+FROM
+    series;
+    
+    CREATE EXTERNAL TABLE IF NOT EXISTS FatoSeries (
+  idSerie INT,
+  idArtista INT,
+  notaMedia FLOAT,
+  numeroVotos INT,
+  tempoMinutos INT
+)
+LOCATION 's3://theclown/raw/trusted/movies_series/series/FatoSeries';
+
+INSERT INTO FatoSeries (idSerie, idArtista, notaMedia, numeroVotos, tempoMinutos)
+SELECT
+    ds.idSerie,
+    da.idArtista,
+    s.nota_media,
+    s.numero_votos,
+    s.tempo_minutos
+FROM
+    infoseries ds
+JOIN
+    artisSeries da ON ds.idserie = da.idartista
+JOIN
+    series s ON ds.id = s.id;

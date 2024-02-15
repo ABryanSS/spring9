@@ -1,0 +1,16 @@
+Table infoDados {
+  id_genres int [ref: > infoGenres.id_genres]
+  name string
+  popularity double
+  voteAverage double
+  originalLanguage string
+  overview string
+  firstAirDate string
+  numberOfEpisodes int
+}
+
+Table infoGenres {
+  id_genres int
+  name string
+}
+

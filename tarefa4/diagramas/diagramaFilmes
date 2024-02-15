@@ -1,0 +1,28 @@
+Table FatoFilmes {
+  idFilme int [ref: > DimFilme.idFilme]
+  idArtista int [ref: > DimArtista.idArtista]
+  notaMedia float
+  numeroVotos int
+  tempoMinutos int
+}
+
+Table DimFilme {
+  idFilme int [primary key]
+  id string
+  tituloPrincipal varchar(255)
+  tituloOriginal varchar(255)
+  anoLancamento int
+  genero varchar(255)
+}
+
+Table DimArtista {
+  idArtista int [primary key]
+  nomeArtista varchar(255)
+  profissao varchar(255)
+  personagem string
+  anoNascimento int
+  anoFalecimento int
+  titulosMaisConhecidos varchar(255)
+  genero_artista varchar(255)
+}
+

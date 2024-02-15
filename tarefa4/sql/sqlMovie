@@ -1,0 +1,67 @@
+CREATE EXTERNAL TABLE IF NOT EXISTS DimFilme (
+  idFilme INT,
+  id STRING,
+  tituloPrincipal VARCHAR(255),
+  tituloOriginal VARCHAR(255),
+  anoLancamento INT,
+  genero VARCHAR(255)
+)
+LOCATION 's3://theclown/raw/trusted/movies_series/movies/DimFilme';
+
+INSERT INTO DimFilme (idFilme, id, tituloPrincipal, tituloOriginal, anoLancamento, genero)
+SELECT
+    ROW_NUMBER() OVER () AS idFilme,
+    id,
+    titulo_principal,
+    titulo_original,
+    ano_lancamento,
+    genero
+FROM
+    movies;
+    
+CREATE EXTERNAL TABLE IF NOT EXISTS DimArtista (
+  idArtista INT,
+  nomeArtista VARCHAR(255),
+  profissao VARCHAR(255),
+  personagem STRING,
+  anoNascimento INT,
+  anoFalecimento INT,
+  titulosMaisConhecidos VARCHAR(255),
+  genero_artista VARCHAR(255)
+)
+LOCATION 's3://theclown/raw/trusted/movies_series/movies/DimArtista';
+
+INSERT INTO DimArtista (idArtista, nomeArtista, anoNascimento, anoFalecimento, profissao, titulosMaisConhecidos)
+SELECT
+    ROW_NUMBER() OVER () AS idArtista,
+    nome_artista,
+    ano_nascimento,
+    ano_falecimento,
+    profissao,
+    titulos_mais_conhecidos
+FROM
+    movies;
+    
+CREATE EXTERNAL TABLE IF NOT EXISTS FatoFilmes (
+  idFilme INT,
+  idArtista INT,
+  notaMedia FLOAT,
+  numeroVotos INT,
+  tempoMinutos INT
+)
+LOCATION 's3://theclown/raw/trusted/movies_series/movies/FatoFilmes';
+
+INSERT INTO FatoFilmes (idFilme, idArtista, notaMedia, numeroVotos, tempoMinutos)
+SELECT
+    df.idFilme,
+    da.idArtista,
+    m.nota_media,
+    m.numero_votos,
+    m.tempo_minutos
+FROM
+    DimFilme df
+JOIN
+    DimArtista da ON df.idFilme = da.idArtista
+JOIN
+    movies m ON df.id = m.id;
+
